@@ -1615,7 +1615,7 @@ MonoBehaviour:
   _highestAmplitudeBuffer: 0
   _audioProfile: 5
   ChooseChannel: 0
-  _isUseMicrophone: 1
+  _isUseMicrophone: 0
   _audioClip: {fileID: 8300000, guid: b94d0c58d40bd6f4f959533d77fc936e, type: 3}
   _audioMixerMaster: {fileID: 24300002, guid: 2688517f1879cef4b8ecc74c67e2e831, type: 2}
   _audioMixerMicrophone: {fileID: -1489489418690601320, guid: 2688517f1879cef4b8ecc74c67e2e831, type: 2}
