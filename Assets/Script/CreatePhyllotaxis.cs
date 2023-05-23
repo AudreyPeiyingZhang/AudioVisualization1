@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GetPhyllotaxis : MonoBehaviour
+public class CreatePhyllotaxis : MonoBehaviour
 {
+
 
     //PhyllotaxisFormularPara
     public float _degree, _Scale;
@@ -19,7 +20,7 @@ public class GetPhyllotaxis : MonoBehaviour
     public bool _isUseLerp = true;
     private bool _isLerp;
     private float _lerpSpeed, _lerpTimer;
-    public Vector2 _lerpSpeedMaxMin;
+    public Vector2 _lerpSpeedMinMax;
     public AnimationCurve _lerpPosAnimCurve;
     public int _lerpPosBand;
 
@@ -33,8 +34,10 @@ public class GetPhyllotaxis : MonoBehaviour
     private Material _trailMaterial;
     public Color _color;
 
-    //Audio input
-    //public AudioFloat _audiofloat;
+    //Forward  Inverse repeat
+    private bool _Forward;
+    public bool _Repeat;
+    public bool _Inverse;
 
     //Positions
     private Vector2 calculatePhyllotaxis(float Degree, float Number, float Scale)
@@ -62,7 +65,7 @@ public class GetPhyllotaxis : MonoBehaviour
 
     void Awake()
     {
-
+        _Forward = true;
         _trailRenderer = GetComponent<TrailRenderer>();
         _trailMaterial = new Material(_trailRenderer.material);
         _trailMaterial.SetColor("_TintColor", _color);
@@ -82,24 +85,73 @@ public class GetPhyllotaxis : MonoBehaviour
         enabled = true;
 
     }
-    void Start()
+    private void Update()
     {
         if (_isUseLerp)
         {
 
             if (_isLerp)
             {
-                _lerpSpeed = Mathf.Lerp(_lerpSpeedMaxMin.x, _lerpSpeedMaxMin.y, _lerpPosAnimCurve.Evaluate(AudioFloat.audioBand[_lerpPosBand]));
-                _lerpTimer += Time.deltaTime* _lerpSpeed;
-                transform.localPosition = Vector3.Lerp(_startPosition, _endPositon, _lerpTimer);
-                if(_lerpTimer>1)
+                _lerpSpeed = Mathf.Lerp(_lerpSpeedMinMax.x, _lerpSpeedMinMax.y, _lerpPosAnimCurve.Evaluate(AudioFloat.audioBand[_lerpPosBand]));
+                _lerpTimer += Time.deltaTime * _lerpSpeed;
+
+                transform.localPosition = Vector3.Lerp(_startPosition, _endPositon, Mathf.Clamp01(_lerpTimer));
+                if (_lerpTimer > 1)
                 {
                     _lerpTimer -= 1;
-                    setLerpingPosition();
-                    _number += _stepSize;
-                    _currentIteration++;
-                    Debug.Log(transform.localPosition);
-                   
+
+                    if(_Forward)
+                    {
+                        _number += _stepSize;
+                        _currentIteration++;
+                    }
+
+                    else
+                    {
+                        _number -= _stepSize;
+                        _currentIteration--;
+                    }
+
+                    if ( _currentIteration > 0 && _currentIteration < _MaxInteration)
+                    {
+                        setLerpingPosition();
+                    }
+
+                    else
+
+                    {
+                        if(_Repeat)
+                        {
+                            if(_Inverse)
+                            {
+                                _Forward = !_Forward;
+                                setLerpingPosition();
+                            }
+
+                            else
+                            {
+                                _number = _numberOfStart;
+                                _currentIteration = 0;
+                                setLerpingPosition();
+                            }
+                            
+
+                        }
+
+                        else
+                        {
+                            _isLerp = false;
+
+                        }
+
+                        
+
+                    }
+
+                    
+                    
+
+
 
                 }
 
@@ -112,7 +164,7 @@ public class GetPhyllotaxis : MonoBehaviour
         if (!_isUseLerp)
         {
             setPhyllotaxisPos = calculatePhyllotaxis(_degree, _number, _Scale);
-            transform.localPosition = new Vector3(setPhyllotaxisPos.x, setPhyllotaxisPos.y, 0);
+            transform.localPosition = new Vector2(setPhyllotaxisPos.x, setPhyllotaxisPos.y);
             _number += _stepSize;
             _currentIteration++;
         }
