@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class CreatePhyllotaxis : MonoBehaviour
@@ -39,6 +40,20 @@ public class CreatePhyllotaxis : MonoBehaviour
     public bool _Repeat;
     public bool _Inverse;
 
+    //scale
+    public bool _useScale;
+    public bool _useLinearScale;
+    public bool _useScaleAnimCurve;
+    public Vector2 _scaleMinMax;
+    private float _currentScale;
+    public int _scaleBand;
+    public float _scaleAnimSpeed;
+    private float _scaleAnimTimer;
+    public AnimationCurve _scaleAnimCurve;
+
+
+
+
     //Positions
     private Vector2 calculatePhyllotaxis(float Degree, float Number, float Scale)
     {
@@ -57,7 +72,7 @@ public class CreatePhyllotaxis : MonoBehaviour
     {
 
 
-        setPhyllotaxisPos = calculatePhyllotaxis(_degree, _number, _Scale);
+        setPhyllotaxisPos = calculatePhyllotaxis(_degree, _number, _currentScale);
         _startPosition = transform.localPosition;
         _endPositon = new Vector2(setPhyllotaxisPos.x, setPhyllotaxisPos.y);
 
@@ -65,6 +80,8 @@ public class CreatePhyllotaxis : MonoBehaviour
 
     void Awake()
     {
+
+        _currentScale = _Scale;
         _Forward = true;
         _trailRenderer = GetComponent<TrailRenderer>();
         _trailMaterial = new Material(_trailRenderer.material);
@@ -72,7 +89,7 @@ public class CreatePhyllotaxis : MonoBehaviour
         _trailRenderer.material = _trailMaterial;
 
         _number = _numberOfStart;
-        transform.localPosition = calculatePhyllotaxis(_degree, _number, _Scale);
+        transform.localPosition = calculatePhyllotaxis(_degree, _number, _currentScale);
 
         if (_isUseLerp)
         {
@@ -87,6 +104,48 @@ public class CreatePhyllotaxis : MonoBehaviour
     }
     private void Update()
     {
+        if(_useScale)
+        {
+            
+
+            if(_useScaleAnimCurve)
+            {
+                _scaleAnimTimer += (_scaleAnimSpeed * AudioFloat.audioBand[_scaleBand]) * Time.deltaTime;
+                if(_scaleAnimTimer>=1)
+                {
+                    _scaleAnimTimer -= 1;
+                }
+
+
+
+               _currentScale = Mathf.Lerp(_scaleMinMax.x, _scaleMinMax.y, _scaleAnimCurve.Evaluate(_scaleAnimTimer));
+
+
+
+            }
+
+            if (_useLinearScale)
+            {
+                _currentScale = Mathf.Lerp(_scaleMinMax.x, _scaleMinMax.y, AudioFloat.audioBand[_scaleBand]);
+
+            }
+
+
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
         if (_isUseLerp)
         {
 
@@ -163,7 +222,7 @@ public class CreatePhyllotaxis : MonoBehaviour
 
         if (!_isUseLerp)
         {
-            setPhyllotaxisPos = calculatePhyllotaxis(_degree, _number, _Scale);
+            setPhyllotaxisPos = calculatePhyllotaxis(_degree, _number, _currentScale);
             transform.localPosition = new Vector2(setPhyllotaxisPos.x, setPhyllotaxisPos.y);
             _number += _stepSize;
             _currentIteration++;
