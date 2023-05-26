@@ -152,6 +152,7 @@ public class CreatePhyllotaxis : MonoBehaviour
             if (_isLerp)
             {
                 _lerpSpeed = Mathf.Lerp(_lerpSpeedMinMax.x, _lerpSpeedMinMax.y, _lerpPosAnimCurve.Evaluate(AudioFloat.audioBand[_lerpPosBand]));
+                //Debug.Log((AudioFloat.audioBand3[0])+","+ (AudioFloat.audioBand3[1]) + "," + (AudioFloat.audioBand3[2]));
                 _lerpTimer += Time.deltaTime * _lerpSpeed;
 
                 transform.localPosition = Vector3.Lerp(_startPosition, _endPositon, Mathf.Clamp01(_lerpTimer));
