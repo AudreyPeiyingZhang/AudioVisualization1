@@ -32,13 +32,20 @@ public class  AudioFloat3Band: MonoBehaviour
     public _channels ChooseChannel = new _channels ();
 
     public bool _isUseMicrophone = true;
-    public AudioClip _audioClip;
+    public AudioClip _audioClipDefaultMusic;
     AudioSource _audioSource;
+   
+    public bool _isUsePiano = true;
+    public AudioClip NoteA;
     
     public AudioMixerGroup _audioMixerMaster;
     public AudioMixerGroup _audioMixerMicrophone;
 
-    void Start()
+   
+    
+
+
+    void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
 
@@ -64,25 +71,39 @@ public class  AudioFloat3Band: MonoBehaviour
         if (!_isUseMicrophone)
         {
             _audioSource.outputAudioMixerGroup = _audioMixerMaster;
-            _audioSource.clip = _audioClip;
+
+            if(_isUsePiano)
+            {
+                _audioSource.clip = null;
+                
+            }
+            if(!_isUsePiano)
+            {
+                
+
+                _audioSource.clip = _audioClipDefaultMusic;
+
+            }
+            
+           
 
         }
 
 
-        _audioSource.Play();
 
+        _audioSource.Play();
 
         setAudioProfile(_audioProfile);
 
     }
 
+
     
     
     void Update()
     {
-       
 
-
+        GenerateNote();
         getSpectrumData();
         reMapBand();
         smoothReband();
@@ -93,6 +114,18 @@ public class  AudioFloat3Band: MonoBehaviour
     }
 
 
+    void GenerateNote()
+    {
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            _audioSource.clip = NoteA;
+            _audioSource.Play();
+        }
+
+    }
+
+    
 
     void setAudioProfile(float AudioProfile)
     {
