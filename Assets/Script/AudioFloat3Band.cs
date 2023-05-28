@@ -37,6 +37,7 @@ public class  AudioFloat3Band: MonoBehaviour
    
     public bool _isUsePiano = true;
     public AudioClip NoteA;
+    public AudioClip NoteB;
     
     public AudioMixerGroup _audioMixerMaster;
     public AudioMixerGroup _audioMixerMicrophone;
@@ -120,6 +121,13 @@ public class  AudioFloat3Band: MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             _audioSource.clip = NoteA;
+            _audioSource.Play();
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            _audioSource.clip = NoteB;
             _audioSource.Play();
         }
 

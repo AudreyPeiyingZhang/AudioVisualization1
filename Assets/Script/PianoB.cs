@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Piano : MonoBehaviour
+public class PianoB : MonoBehaviour
 {
     private AudioSource audioSource;
     public Color _color;
@@ -15,7 +15,7 @@ public class Piano : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
 
-
+        
 
     }
 
@@ -28,7 +28,7 @@ public class Piano : MonoBehaviour
     {
         
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.B))
         {
             _button.GetComponent<Image>().color = _color;
             audioSource.Play();
@@ -36,7 +36,7 @@ public class Piano : MonoBehaviour
 
 
         }
-        if (Input.GetKeyUp(KeyCode.A))
+        if (Input.GetKeyUp(KeyCode.B))
         {
             _button.GetComponent<Image>().color = Color.white;
 
