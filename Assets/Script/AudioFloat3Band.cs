@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 [RequireComponent (typeof(AudioSource))]
 
@@ -34,10 +36,13 @@ public class  AudioFloat3Band: MonoBehaviour
     public bool _isUseMicrophone = true;
     public AudioClip _audioClipDefaultMusic;
     AudioSource _audioSource;
-   
+    
+
     public bool _isUsePiano = true;
-    public AudioClip NoteA;
-    public AudioClip NoteB;
+ 
+  
+    
+
     
     public AudioMixerGroup _audioMixerMaster;
     public AudioMixerGroup _audioMixerMicrophone;
@@ -49,6 +54,9 @@ public class  AudioFloat3Band: MonoBehaviour
     void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
+        
+     
+        
 
         if (_isUseMicrophone)
 
@@ -104,7 +112,8 @@ public class  AudioFloat3Band: MonoBehaviour
     void Update()
     {
 
-        GenerateNote();
+
+       
         getSpectrumData();
         reMapBand();
         smoothReband();
@@ -115,25 +124,11 @@ public class  AudioFloat3Band: MonoBehaviour
     }
 
 
-    void GenerateNote()
-    {
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            _audioSource.clip = NoteA;
-            _audioSource.Play();
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            _audioSource.clip = NoteB;
-            _audioSource.Play();
-        }
-
-    }
+    
 
     
+  
+
 
     void setAudioProfile(float AudioProfile)
     {
@@ -146,9 +141,9 @@ public class  AudioFloat3Band: MonoBehaviour
 
     void getSpectrumData()
     {
-        
-        _audioSource.GetSpectrumData(_FrequenciesChannelLeft, 0, FFTWindow.Blackman);
-        _audioSource.GetSpectrumData(_FrequenciesChannelRight, 1, FFTWindow.Blackman);
+
+        AudioListener.GetSpectrumData(_FrequenciesChannelLeft, 0, FFTWindow.Blackman);
+        AudioListener.GetSpectrumData(_FrequenciesChannelRight, 1, FFTWindow.Blackman);
 
     }
     void reMapBand()
