@@ -36,6 +36,7 @@ public class PianoTrigger : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.A))
         {
             _keyButtons[0].GetComponent<Image>().color = Color.white;
+            _audiosource[0].Stop();
         }
         
     }
@@ -50,6 +51,7 @@ public class PianoTrigger : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.B))
         {
             _keyButtons[1].GetComponent<Image>().color = Color.white;
+            _audiosource[1].Stop();
         }
 
     }

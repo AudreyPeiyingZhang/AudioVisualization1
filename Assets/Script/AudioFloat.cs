@@ -31,52 +31,72 @@ public class  AudioFloat: MonoBehaviour
     public _channels ChooseChannel = new _channels ();
 
     public bool _isUseMicrophone = true;
-    public AudioClip _audioClip;
+    public AudioClip _audioClipDefaultMusic;
     AudioSource _audioSource;
-    
+
+    public bool _isUsePiano = true;
+
+
     public AudioMixerGroup _audioMixerMaster;
     public AudioMixerGroup _audioMixerMicrophone;
 
-    void Start()
+    void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
+
+
+
 
         if (_isUseMicrophone)
 
         {
             string[] deviceNames = Microphone.devices;
-            if (deviceNames.Length>0)
+            if (deviceNames.Length > 0)
             {
                 _audioSource.outputAudioMixerGroup = _audioMixerMicrophone;
 
-                _audioSource.clip = Microphone.Start(deviceNames[0], true, 3600 -1, AudioSettings.outputSampleRate);
-                
+                _audioSource.clip = Microphone.Start(deviceNames[0], true, 3600 - 1, AudioSettings.outputSampleRate);
+
             }
             else
             {
                 _isUseMicrophone = false;
             }
 
-            
+
         }
 
         if (!_isUseMicrophone)
         {
             _audioSource.outputAudioMixerGroup = _audioMixerMaster;
-            _audioSource.clip = _audioClip;
+
+            if (_isUsePiano)
+            {
+                _audioSource.clip = null;
+
+            }
+            if (!_isUsePiano)
+            {
+
+
+                _audioSource.clip = _audioClipDefaultMusic;
+
+            }
+
+
 
         }
 
 
-        _audioSource.Play();
 
+        
 
         setAudioProfile(_audioProfile);
 
     }
 
-    
-    
+
+
     void Update()
     {
        
@@ -105,8 +125,8 @@ public class  AudioFloat: MonoBehaviour
     void getSpectrumData()
     {
         
-        _audioSource.GetSpectrumData(_FrequenciesChannelLeft, 0, FFTWindow.Blackman);
-        _audioSource.GetSpectrumData(_FrequenciesChannelRight, 1, FFTWindow.Blackman);
+        AudioListener.GetSpectrumData(_FrequenciesChannelLeft, 0, FFTWindow.Blackman);
+        AudioListener.GetSpectrumData(_FrequenciesChannelRight, 1, FFTWindow.Blackman);
 
     }
     void reMapBand()
@@ -231,6 +251,8 @@ public class  AudioFloat: MonoBehaviour
             {
                 audioBand[i] = remapSamplesBands[i] / frequencyBandHighest[i];
                 audioBandBuffer[i] = smoothBands[i] / frequencyBandHighest[i];
+
+                
             }
             
         }
@@ -276,7 +298,7 @@ public class  AudioFloat: MonoBehaviour
 
     }
 
-
+    
 
 }
 
