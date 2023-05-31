@@ -14,8 +14,8 @@ public class  AudioFloat: MonoBehaviour
 {
 
     
-    public float[] _FrequenciesChannelLeft = new float[512];
-    public float[] _FrequenciesChannelRight = new float[512];
+    public static float[] _FrequenciesChannelLeft = new float[512];
+    public static float[] _FrequenciesChannelRight = new float[512];
     public static float[] remapSamplesBands = new float[8];
     public static float[] smoothBands = new float[8];
     float[] smoothBandDecrease = new float[8];

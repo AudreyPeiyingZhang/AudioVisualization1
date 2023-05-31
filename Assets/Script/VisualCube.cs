@@ -9,9 +9,13 @@ public class VisualCube : MonoBehaviour
 {
     
     public GameObject prefeb;
-    public float maxValue = 100000.0f;
+    public float maxValue = 5.0f;
+    public float minValue = 1.0f;
     GameObject[] cubes = new GameObject[512];
-    public AudioFloat audioFloat;
+    
+    private Vector3[] _originalScale;
+    private float _handler;
+
 
 
 
@@ -19,8 +23,10 @@ public class VisualCube : MonoBehaviour
 
     void Start()
     {
+        
         for (int i = 0; i< 512; i++)
         {
+            
             GameObject _cloneCubes = Instantiate(prefeb);
             _cloneCubes.transform.position = this.transform.position;
             _cloneCubes.transform.parent = this.transform;
@@ -44,8 +50,13 @@ public class VisualCube : MonoBehaviour
         {
             if (cubes[i]!= null)
             {
-                
-                cubes[i].transform.localScale = new Vector3 (1, (audioFloat._FrequenciesChannelRight[i]+ audioFloat._FrequenciesChannelLeft[i]) * maxValue + 1, 1);
+                _originalScale[i] = cubes[i].transform.localScale;
+                _handler = Mathf.Lerp(minValue, maxValue, AudioFloat._FrequenciesChannelRight[i] + AudioFloat._FrequenciesChannelLeft[i]);
+
+
+                Vector3 _newScale = new Vector3 (_originalScale[i].x * _handler, _originalScale[i].y, _originalScale[i].z);
+                cubes[i].transform.localScale = _newScale;
+                Debug.Log(_newScale);
             }
         }
     }
