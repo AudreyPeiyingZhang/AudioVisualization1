@@ -11,6 +11,12 @@ public class Scale : MonoBehaviour
     [SerializeField] private int _band;
     private Vector3 _originalScale;
     [SerializeField] private bool _useAverage;
+    private float _colHandler;
+    [SerializeField] private float _maxEmissionValue = 2.0f;
+    [SerializeField] private float _minEmissionValue = 0.0f;
+    [SerializeField] private Color _color;
+    [SerializeField] private AnimationCurve _animCurve;
+
 
 
     void Start()
@@ -22,6 +28,7 @@ public class Scale : MonoBehaviour
     void Update()
     {
         scale();
+        emssionCol();
     }
 
     void scale()
@@ -47,4 +54,21 @@ public class Scale : MonoBehaviour
 
 
     }
+
+    void emssionCol()
+    {
+        if (!_useAverage)
+        {
+            _colHandler = Mathf.Lerp(_minEmissionValue, _maxEmissionValue, _animCurve.Evaluate(AudioFloat.audioBandBuffer[_band]));
+            Color color = _color * _colHandler;
+            this.GetComponent<Renderer>().material.color = color;
+            
+
+        }
+
+       
+
+    }
+
+
 }
