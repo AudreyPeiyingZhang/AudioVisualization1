@@ -9,7 +9,7 @@ using UnityEngine.Audio;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
-[RequireComponent (typeof(AudioSource))]
+
 
 
 
@@ -33,19 +33,7 @@ public class  AudioFloat3Band: MonoBehaviour
     public enum _channels {Stereo, Left,  Right};
     public _channels ChooseChannel = new _channels ();
 
-    public bool _isUseMicrophone = true;
-    public AudioClip _audioClipDefaultMusic;
-    AudioSource _audioSource;
-    
 
-    public bool _isUsePiano = true;
- 
-  
-    
-
-    
-    public AudioMixerGroup _audioMixerMaster;
-    public AudioMixerGroup _audioMixerMicrophone;
 
    
     
@@ -53,54 +41,12 @@ public class  AudioFloat3Band: MonoBehaviour
 
     void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
+       
         
      
         
 
-        if (_isUseMicrophone)
-
-        {
-            string[] deviceNames = Microphone.devices;
-            if (deviceNames.Length>0)
-            {
-                _audioSource.outputAudioMixerGroup = _audioMixerMicrophone;
-
-                _audioSource.clip = Microphone.Start(deviceNames[0], true, 3600 -1, AudioSettings.outputSampleRate);
-                
-            }
-            else
-            {
-                _isUseMicrophone = false;
-            }
-
-            
-        }
-
-        if (!_isUseMicrophone)
-        {
-            _audioSource.outputAudioMixerGroup = _audioMixerMaster;
-
-            if(_isUsePiano)
-            {
-                _audioSource.clip = null;
-                
-            }
-            if(!_isUsePiano)
-            {
-                
-
-                _audioSource.clip = _audioClipDefaultMusic;
-
-            }
-            
-           
-
-        }
-
-
-
-        _audioSource.Play();
+       
 
         setAudioProfile(_audioProfile);
 
@@ -113,12 +59,13 @@ public class  AudioFloat3Band: MonoBehaviour
     {
 
 
-       
+        
         getSpectrumData();
         reMapBand();
         smoothReband();
         createAudioBand();
         getAllAverageAmplitude();
+        
 
 
     }
@@ -126,7 +73,6 @@ public class  AudioFloat3Band: MonoBehaviour
 
     
 
-    
   
 
 
@@ -305,6 +251,6 @@ public class  AudioFloat3Band: MonoBehaviour
     }
 
 
-
+    
 }
 

@@ -6,7 +6,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Audio;
 
-[RequireComponent (typeof(AudioSource))]
+
 
 
 
@@ -30,62 +30,13 @@ public class  AudioFloat: MonoBehaviour
     public enum _channels {Stereo, Left,  Right};
     public _channels ChooseChannel = new _channels ();
 
-    public bool _isUseMicrophone = true;
-    public AudioClip _audioClipDefaultMusic;
-    AudioSource _audioSource;
-
-    public bool _isUsePiano = true;
-
-
-    public AudioMixerGroup _audioMixerMaster;
-    public AudioMixerGroup _audioMixerMicrophone;
 
     void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
+        
 
 
-
-
-        if (_isUseMicrophone)
-
-        {
-            string[] deviceNames = Microphone.devices;
-            if (deviceNames.Length > 0)
-            {
-                _audioSource.outputAudioMixerGroup = _audioMixerMicrophone;
-
-                _audioSource.clip = Microphone.Start(deviceNames[0], true, 3600 - 1, AudioSettings.outputSampleRate);
-
-            }
-            else
-            {
-                _isUseMicrophone = false;
-            }
-
-
-        }
-
-        if (!_isUseMicrophone)
-        {
-            _audioSource.outputAudioMixerGroup = _audioMixerMaster;
-
-            if (_isUsePiano)
-            {
-                _audioSource.clip = null;
-
-            }
-            if (!_isUsePiano)
-            {
-
-
-                _audioSource.clip = _audioClipDefaultMusic;
-
-            }
-
-
-
-        }
+        
 
 
 
