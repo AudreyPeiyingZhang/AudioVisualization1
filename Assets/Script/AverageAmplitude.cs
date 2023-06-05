@@ -23,7 +23,7 @@ public class AverageAmplitude : MonoBehaviour
     {
         if (_isUseBuffer)
         {
-            transform.localScale = new Vector3(transform.localScale.x, AudioFloat._averageAmplitudeBuffer * scale + 2, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, AudioFloat64Band._averageAmplitudeBuffer * scale + 2, transform.localScale.z);
             
 
             
@@ -31,7 +31,7 @@ public class AverageAmplitude : MonoBehaviour
 
         else if (!_isUseBuffer)
         {
-            transform.localScale = new Vector3(transform.localScale.x, AudioFloat._averageAmplitude * scale + 2, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, AudioFloat64Band._averageAmplitude * scale + 2, transform.localScale.z);
             
         }
 

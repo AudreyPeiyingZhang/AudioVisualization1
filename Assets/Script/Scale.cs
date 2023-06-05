@@ -35,7 +35,7 @@ public class Scale : MonoBehaviour
     {
         if (!_useAverage)
         {
-            _handler = Mathf.Lerp(_minScale, _maxScale, AudioFloat.audioBandBuffer[_band]);
+            _handler = Mathf.Lerp(_minScale, _maxScale, AudioFloat8Band.audioBandBuffer[_band]);
 
             Vector3 newScale = _originalScale * _handler;
             this.transform.localScale = newScale;
@@ -43,7 +43,7 @@ public class Scale : MonoBehaviour
 
         if (_useAverage)
         {
-            _handler = Mathf.Lerp(_minScale, _maxScale, AudioFloat._averageAmplitudeBuffer);
+            _handler = Mathf.Lerp(_minScale, _maxScale, AudioFloat8Band._averageAmplitudeBuffer);
 
             Vector3 newScale = _originalScale * _handler;
             this.transform.localScale = newScale;
@@ -59,7 +59,7 @@ public class Scale : MonoBehaviour
     {
         if (!_useAverage)
         {
-            _colHandler = Mathf.Lerp(_minEmissionValue, _maxEmissionValue, _animCurve.Evaluate(AudioFloat.audioBandBuffer[_band]));
+            _colHandler = Mathf.Lerp(_minEmissionValue, _maxEmissionValue, _animCurve.Evaluate(AudioFloat8Band.audioBandBuffer[_band]));
             Color color = _color * _colHandler;
             this.GetComponent<Renderer>().material.color = color;
             

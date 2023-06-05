@@ -1,27 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using Unity.VisualScripting;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 
 
 
 
-public class  AudioFloat: MonoBehaviour
+public class  AudioFloat64Band: MonoBehaviour
 {
 
     
-    public static float[] _FrequenciesChannelLeft = new float[512];
-    public static float[] _FrequenciesChannelRight = new float[512];
-    public static float[] remapSamplesBands = new float[8];
-    public static float[] smoothBands = new float[8];
-    float[] smoothBandDecrease = new float[8];
-    public static float[] audioBand = new float[8];
-    public float[] frequencyBandHighest = new float[8];
-    public static float[] audioBandBuffer = new float[8];
+    public float[] _FrequenciesChannelLeft = new float[512];
+    public float[] _FrequenciesChannelRight = new float[512];
+    public static float[] remapSamplesBands = new float[64];
+    public static float[] smoothBands = new float[64];
+    float[] smoothBandDecrease = new float[64];
+    public static float[] audioBand64 = new float[64];
+    public float[] frequencyBandHighest = new float[64];
+    public static float[] audioBandBuffer = new float[64];
+
+
     public static float _averageAmplitude;
     public static float _averageAmplitudeBuffer;
     public float _highestAmplitude;
@@ -31,42 +36,51 @@ public class  AudioFloat: MonoBehaviour
     public _channels ChooseChannel = new _channels ();
 
 
+
+   
+    
+
+
     void Awake()
     {
+       
+        
+     
         
 
-
-        
-
-
-
-        
+       
 
         setAudioProfile(_audioProfile);
 
     }
 
 
-
+    
+    
     void Update()
     {
-       
 
 
+        
         getSpectrumData();
         reMapBand();
         smoothReband();
         createAudioBand();
         getAllAverageAmplitude();
+        
 
 
     }
 
 
+    
+
+  
+
 
     void setAudioProfile(float AudioProfile)
     {
-        for (int i = 0;i<8;i++)
+        for (int i = 0;i<64;i++)
         {
             frequencyBandHighest[i] = AudioProfile;
 
@@ -75,7 +89,7 @@ public class  AudioFloat: MonoBehaviour
 
     void getSpectrumData()
     {
-        
+
         AudioListener.GetSpectrumData(_FrequenciesChannelLeft, 0, FFTWindow.Blackman);
         AudioListener.GetSpectrumData(_FrequenciesChannelRight, 1, FFTWindow.Blackman);
 
@@ -93,48 +107,40 @@ public class  AudioFloat: MonoBehaviour
          * NOS - NumberofOldSamples
          * 
          * 
-         * 20 - 60 Hz
-         * 60 - 250 Hz
-         * 250 - 500 Hz         
-         * 500 - 2000 Hz
-         * 2000 - 4000 Hz
-         * 4000 - 6000 Hz
-         * 6000 - 20000 Hz
+       
          * 
-         * 
-         * NS NOS                Frequency Range      
-         * 0 - 2 = 43*2 = 86 Hz [0,86]
-         * 1 - 4 = 172 Hz      [87,258]
-         * 2 - 8 = 344 Hz     [259,602]
-         * 3 - 16 = 688 Hz    [603,1290]
-         * 4 - 32 = 1376 Hz   [1291,2666]
-         * 5 - 64 =  2752 Hz  [2667, 5418]
-         * 6 - 128 = 5504 Hz  [5419,10922]
-         * 7 - 256 = 11008 Hz [10923,219930]
-         *     510
-         *     510+2
          */
-        
-        int count = 0;
-        for (int i = 0; i<8; i++) 
-        {
-            int remapSamples = 0;
-            float average = 0;
-            remapSamples = (int)Mathf.Pow(2, i+1);
-            if(i == 7)
-            {
-                remapSamples += 2;
 
-            }
-            //Debug.Log(remapSamples);
-            for (int j = 0; j < remapSamples; j++)
+        int count = 0;
+        int remapSamples = 1;
+        int power = 0;
+
+
+        for (int i = 0; i<64; i++) 
+        {
+            float average = 0;
+
+            //int remapSamples = (int)(Mathf.Pow(3, i)) * 14;
+
+            if (i == 16 || i == 32 || i == 40 || i == 48 || i == 56)
             {
-                if(ChooseChannel == _channels.Stereo)
+                power++;
+                remapSamples = (int)Mathf.Pow(2, power);
+                if(power == 3)
+                {
+                    remapSamples -= 2;
+                }
+            }
+
+            for (int j =0; j< remapSamples; j++)
+            {
+
+                if (ChooseChannel == _channels.Stereo)
                 {
                     average += _FrequenciesChannelRight[count] + _FrequenciesChannelLeft[count];
                 }
 
-                else if(ChooseChannel == _channels.Left)
+                else if (ChooseChannel == _channels.Left)
                 {
                     average += _FrequenciesChannelLeft[count];
                 }
@@ -142,14 +148,13 @@ public class  AudioFloat: MonoBehaviour
                 {
                     average += _FrequenciesChannelRight[count];
                 }
-
                 count++;
+
             }
+
             average /= remapSamples;
-
-            remapSamplesBands[i] = average*400;
-
-
+            remapSamplesBands[i] = average * 80;
+            //Debug.Log(remapSamplesBands[0] + "," + remapSamplesBands[1] + "," + remapSamplesBands[2]);
 
         }
 
@@ -161,7 +166,7 @@ public class  AudioFloat: MonoBehaviour
 
     void smoothReband ()
     {
-        for (int i = 0;i<8;i++)
+        for (int i = 0;i<64;i++)
         {
             if(remapSamplesBands[i] > smoothBands[i])
             {
@@ -192,7 +197,7 @@ public class  AudioFloat: MonoBehaviour
 
     void createAudioBand()
     {
-        for (int i = 0;i < 8;i++)
+        for (int i = 0;i < 64;i++)
         {
             if (remapSamplesBands[i]> frequencyBandHighest[i])
             {
@@ -200,12 +205,11 @@ public class  AudioFloat: MonoBehaviour
             }
             if (frequencyBandHighest[i] != 0)
             {
-                audioBand[i] = remapSamplesBands[i] / frequencyBandHighest[i];
+                audioBand64[i] = remapSamplesBands[i] / frequencyBandHighest[i];
                 audioBandBuffer[i] = smoothBands[i] / frequencyBandHighest[i];
-
-                
             }
-            
+
+            //Debug.Log(audioBand64[0] + "," + audioBand64[1] + "," + audioBand64[2]);
         }
         
     }
@@ -219,9 +223,9 @@ public class  AudioFloat: MonoBehaviour
         float _currentAverageAmplitudeBuffer = 0.0f;
 
 
-        for (int i = 0; i<8; i++)
+        for (int i = 0; i<64; i++)
         {
-            _currentAverageAmplitude += audioBand[i];
+            _currentAverageAmplitude += audioBand64[i];
 
             _currentAverageAmplitudeBuffer += audioBandBuffer[i];
         }
@@ -249,7 +253,7 @@ public class  AudioFloat: MonoBehaviour
 
     }
 
-    
 
+    
 }
 

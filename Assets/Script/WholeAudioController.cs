@@ -5,27 +5,32 @@ using UnityEngine.Audio;
 
 public class WholeAudioController : MonoBehaviour
 {
-    public static bool _isUseMicrophone;
-    public static bool _isUsePiano;
-    public static bool _isUseDefaultMusic;
+    public bool _isUseMicrophone = false;
+    public bool _isUsePiano = false;
+    public bool _isUseDefaultMusic = false;
 
     public AudioClip _audioClipDefaultMusic;
     AudioSource _audioSource;
 
     public AudioMixerGroup _audioMixerMaster;
     public AudioMixerGroup _audioMixerMicrophone;
-
-    void Start()
+     
+    void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-      
+       
+
     }
 
-    public void Update()
+
+    void Update()
     {
+        
         checkUseWhichDevice();
-        Debug.Log(_isUseDefaultMusic);
+        Debug.Log(_audioSource.clip);
     }
+
+
 
     public void checkUseWhichDevice()
     {
@@ -33,7 +38,7 @@ public class WholeAudioController : MonoBehaviour
         {
             _audioSource.outputAudioMixerGroup = _audioMixerMaster;
             _audioSource.clip = _audioClipDefaultMusic;
-            _audioSource.Play();
+            _audioSource.Play(0);
         }
         
         
@@ -41,18 +46,14 @@ public class WholeAudioController : MonoBehaviour
 
         if (_isUseMicrophone)
         {
-            string[] deviceNames = Microphone.devices;
-            if (deviceNames.Length > 0)
-            {
-                _audioSource.Stop();
-                _audioSource.outputAudioMixerGroup = _audioMixerMicrophone;
-                _audioSource.clip = Microphone.Start(deviceNames[0], true, 3600 - 1, AudioSettings.outputSampleRate);
-                _audioSource.Play();
-            }
-            else
-            {
-                _isUseMicrophone = false;
-            }
+            _audioSource.Stop();
+            _audioSource.outputAudioMixerGroup = _audioMixerMicrophone;
+            
+            _audioSource.clip = Microphone.Start(Microphone.devices[0], true, 3600 - 1, AudioSettings.outputSampleRate);
+            _audioSource.Play(0);
+
+
+
         }
       
         
@@ -63,7 +64,7 @@ public class WholeAudioController : MonoBehaviour
             _audioSource.outputAudioMixerGroup = _audioMixerMaster;
             _audioSource.clip = null;
         }
-        
 
+        
     }
 }

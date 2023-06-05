@@ -30,16 +30,16 @@ public class EightCubeTest : MonoBehaviour
     {
         if (_isUseBuffer)
         {
-            transform.localScale = new Vector3(transform.localScale.x, AudioFloat.audioBandBuffer[setBandNum]*3 + 1, transform.localScale.z);
-            Color _color = _col * (AudioFloat.audioBandBuffer[setBandNum]+1);
+            transform.localScale = new Vector3(transform.localScale.x, AudioFloat8Band.audioBandBuffer[setBandNum]*3 + 1, transform.localScale.z);
+            Color _color = _col * (AudioFloat64Band.audioBandBuffer[setBandNum]+1);
             
             _material.SetColor ("_Color", _color);
         }
 
         else if (!_isUseBuffer)
         {
-            transform.localScale = new Vector3(transform.localScale.x, AudioFloat.audioBand[setBandNum] + 1, transform.localScale.z);
-            Color _color = _col * (AudioFloat.audioBand[setBandNum] + 1);
+            transform.localScale = new Vector3(transform.localScale.x, AudioFloat8Band.audioBand[setBandNum] + 1, transform.localScale.z);
+            Color _color = _col * (AudioFloat8Band.audioBand[setBandNum] + 1);
             _material.SetColor("_Color", _color);
         }
         

@@ -8,7 +8,8 @@ public class CreatePhyllotaxis3Band : MonoBehaviour
 
 
     //PhyllotaxisFormularPara
-    public float _degree, _Scale;
+    public float _degree;
+    public float _Scale;
     public int _numberOfStart;
     private int _number;
 
@@ -152,7 +153,7 @@ public class CreatePhyllotaxis3Band : MonoBehaviour
             if (_isLerp)
             {
                 _lerpSpeed = Mathf.Lerp(_lerpSpeedMinMax.x, _lerpSpeedMinMax.y, _lerpPosAnimCurve.Evaluate(AudioFloat3Band.audioBand3[_lerpPosBand]));
-                //Debug.Log((AudioFloat.audioBand3[0])+","+ (AudioFloat.audioBand3[1]) + "," + (AudioFloat.audioBand3[2]));
+                //Debug.Log((AudioFloat64Band.audioBand64[0])+","+ (AudioFloat64Band.audioBand64[1]) + "," + (AudioFloat64Band.audioBand64[2]));
                 _lerpTimer += Time.deltaTime * _lerpSpeed;
 
                 transform.localPosition = Vector3.Lerp(_startPosition, _endPositon, Mathf.Clamp01(_lerpTimer));

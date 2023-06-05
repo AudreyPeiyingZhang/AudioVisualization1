@@ -110,7 +110,7 @@ public class CreatePhyllotaxis : MonoBehaviour
 
             if(_useScaleAnimCurve)
             {
-                _scaleAnimTimer += (_scaleAnimSpeed * AudioFloat.audioBand[_scaleBand]) * Time.deltaTime;
+                _scaleAnimTimer += (_scaleAnimSpeed * AudioFloat8Band.audioBand[_scaleBand]) * Time.deltaTime;
                 if(_scaleAnimTimer>=1)
                 {
                     _scaleAnimTimer -= 1;
@@ -126,7 +126,7 @@ public class CreatePhyllotaxis : MonoBehaviour
 
             if (_useLinearScale)
             {
-                _currentScale = Mathf.Lerp(_scaleMinMax.x, _scaleMinMax.y, AudioFloat.audioBand[_scaleBand]);
+                _currentScale = Mathf.Lerp(_scaleMinMax.x, _scaleMinMax.y, AudioFloat8Band.audioBand[_scaleBand]);
 
             }
 
@@ -151,8 +151,8 @@ public class CreatePhyllotaxis : MonoBehaviour
 
             if (_isLerp)
             {
-                _lerpSpeed = Mathf.Lerp(_lerpSpeedMinMax.x, _lerpSpeedMinMax.y, _lerpPosAnimCurve.Evaluate(AudioFloat.audioBand[_lerpPosBand]));
-                //Debug.Log((AudioFloat.audioBand3[0])+","+ (AudioFloat.audioBand3[1]) + "," + (AudioFloat.audioBand3[2]));
+                _lerpSpeed = Mathf.Lerp(_lerpSpeedMinMax.x, _lerpSpeedMinMax.y, _lerpPosAnimCurve.Evaluate(AudioFloat8Band.audioBand[_lerpPosBand]));
+                //Debug.Log((AudioFloat64Band.audioBand64[0])+","+ (AudioFloat64Band.audioBand64[1]) + "," + (AudioFloat64Band.audioBand64[2]));
                 _lerpTimer += Time.deltaTime * _lerpSpeed;
 
                 transform.localPosition = Vector3.Lerp(_startPosition, _endPositon, Mathf.Clamp01(_lerpTimer));
