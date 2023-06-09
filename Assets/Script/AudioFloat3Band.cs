@@ -72,9 +72,7 @@ public class  AudioFloat3Band: MonoBehaviour
     {
         for (int i = 0;i<2;i++)
         {
-            frequencyBandHighest[i] = 10;
-            //frequencyBandHighest[i] = AudioProfile;
-
+            frequencyBandHighest[i] = AudioProfile;
         }
     }
 
