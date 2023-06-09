@@ -13,9 +13,13 @@ public class Rotate : MonoBehaviour
     [SerializeField] private float _minEmssionCol = 1.0f;
     [SerializeField] private float _colorHandler;
     [SerializeField] private Color _col;
-   void Start()
+
+
+    private Quaternion _initialRotation;
+
+   void Awake()
     {
-        
+        _initialRotation = transform.rotation;
     }
 
   
@@ -27,7 +31,8 @@ public class Rotate : MonoBehaviour
 
     void rotate()
     {
-
+       
+        
         _handler = Mathf.Lerp(_minSpeed, _maxSpeed, AudioFloat3Band._averageAmplitude);
         if(_ClockWise)
         {

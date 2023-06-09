@@ -1,13 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
+
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.TestTools;
-using UnityEngine.UI;
 
 
 
@@ -80,7 +72,8 @@ public class  AudioFloat3Band: MonoBehaviour
     {
         for (int i = 0;i<2;i++)
         {
-            frequencyBandHighest[i] = AudioProfile;
+            frequencyBandHighest[i] = 10;
+            //frequencyBandHighest[i] = AudioProfile;
 
         }
     }

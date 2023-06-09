@@ -1,14 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager;
-using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.TestTools;
-using UnityEngine.UI;
 
+using UnityEngine;
 
 
 
